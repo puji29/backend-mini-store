@@ -2,12 +2,16 @@ const createDbConnection = require("../config/Database");
 
 
 const addUser = async(newDataUser)=>{
-    const db = await createDbConnection()
-    const { username, email, password } = newDataUser
+    const db = await createDbConnection();
+    const { username, email, password } = newDataUser;
 
-    const user = await db.query("INSERT INTO User (username,email,password) VALUES (?,?,?)",[username, email, password])
+    // Insert user data into the database
+    await db.query("INSERT INTO User (username,email,password) VALUES (?,?,?)", [username, email, password]);
 
-    return user
+    // Retrieve the inserted data
+    const insertedData = await db.query("SELECT * FROM User WHERE username = ? AND email = ?", [username, email]);
+
+    return insertedData;
 }
 
 const getUsers = async()=>{

@@ -4,11 +4,14 @@ const {
   findSliderById,
 } = require("../usecase/Slider_usecase");
 
-const findAllHandler = async (req, res) => {
+
+
+const findAllHandler =  async(req, res) => {
   try {
     const slider = await findAllSlider();
     res.status(200).json(slider);
   } catch (error) {
+    res.status(500).json({ message: "failed get data slider" });
     console.log(error);
   }
 };

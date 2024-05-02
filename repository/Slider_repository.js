@@ -1,6 +1,9 @@
-const createDbConnection = require("../config/Database");
 
-const getSliders = async () => {
+const createDbConnection = require("../config/Database");
+const db = createDbConnection();
+
+
+const getSliders = async() => {
   const db = await createDbConnection();
 
   const slider = await db.query("SELECT * FROM Slider");
@@ -8,21 +11,21 @@ const getSliders = async () => {
   return slider;
 };
 
-const getSliderById = async(id)=> {
-    const db = await createDbConnection()
-    
-    const [sliderById] = await db.query("SELECT * FROM Slider WHERE id=?",[id])
-    
-    if(sliderById.length === 0){
-        throw new Error('ID Not Found')
-    }
+const getSliderById = async (id) => {
+  const db = await createDbConnection();
 
-    return sliderById
-}
+  const [sliderById] = await db.query("SELECT * FROM Slider WHERE id=?", [id]);
+
+  if (sliderById.length === 0) {
+    throw new Error("ID Not Found");
+  }
+
+  return sliderById;
+};
 
 const addSlider = async (newDataSlider) => {
   const db = await createDbConnection();
-  const { name, image, url,type } = newDataSlider;
+  const { name, image, url, type } = newDataSlider;
 
   const result = await db.query(
     "INSERT INTO Slider (name, image, url, type) VALUES (?,?,?,?)",
@@ -35,5 +38,5 @@ const addSlider = async (newDataSlider) => {
 module.exports = {
   getSliders,
   addSlider,
-  getSliderById
+  getSliderById,
 };

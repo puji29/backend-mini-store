@@ -3,9 +3,10 @@ const { authenticateUser } = require("../usecase/auth_usecase.js");
 async function loginHandler(req, res) {
   try {
     const { username, password } = req.body;
-    const token = await authenticateUser(username, password);
+    const authResult = await authenticateUser(username, password);
     
-    res.json({ success: true, token });
+    // Return user data and token
+    res.json({ success: true, user: authResult.user, token: authResult.token });
   } catch (error) {
     console.log(error);
     res

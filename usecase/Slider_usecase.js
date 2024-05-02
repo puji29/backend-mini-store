@@ -2,10 +2,10 @@ const path = require("path");
 const fs = require("fs");
 const { getSliders, addSlider,getSliderById } = require("../repository/Slider_repository");
 
-const findAllSlider = async () => {
-  const [rows] = await getSliders();
+const findAllSlider =  async() => {
+  const [row] = await getSliders();
 
-  return rows;
+  return row;
 };
 
 const findSliderById = async(id)=> {

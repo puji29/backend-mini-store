@@ -1,4 +1,4 @@
-const mysql = require("mysql")
+const mysql = require("mysql2/promise")
 
 module.exports = function  createDbConnection() {
     return mysql.createConnection({

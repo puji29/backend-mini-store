@@ -4,6 +4,7 @@ const {
   addProduct,
   getAllProduct,
   getProductById,
+  getProductByCategory
 } = require("../repository/Product_repository");
 
 const createProduct = async (req, newDataProduct) => {
@@ -28,8 +29,7 @@ const createProduct = async (req, newDataProduct) => {
     const savePath = `./public/images/${fileName}`;
     await file.mv(savePath);
 
-    // Log untuk memastikan URL telah dibuat dengan benar
-    console.log("File URL:", url);
+    
 
     // Pastikan untuk menugaskan URL ke property yang benar
     newDataProduct.image = fileName;
@@ -44,9 +44,9 @@ const createProduct = async (req, newDataProduct) => {
 };
 
 const findAllProduct = async () => {
-  const product = await getAllProduct();
+  const [row] = await getAllProduct();
 
-  return product;
+  return row;
 };
 
 const findById = async (id) => {
@@ -59,8 +59,22 @@ const findById = async (id) => {
     throw error;
   }
 };
+
+const findProductByCategory = async (categoryName) => {
+  try {
+    const products = await getProductByCategory(categoryName);
+    if (products.length === 0) {
+      throw new Error('No products found for this category');
+    }
+    return products;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createProduct,
   findAllProduct,
-  findById
+  findById,
+  findProductByCategory
 };
