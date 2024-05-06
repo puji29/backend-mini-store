@@ -4,6 +4,7 @@ const { findHandler,addHandler,findByIdHandler } = require("../controller/Catego
 
 const router = express.Router()
 
+
 router.get('/categories', findHandler)
 router.post('/categories', addHandler)
 router.get('/categories/:id', findByIdHandler)

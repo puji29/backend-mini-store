@@ -2,6 +2,7 @@ const {
   getCarts,
   addCart,
   getCartById,
+  getCartByUserId,
   updateCart,
   deleteCart
 } = require("../repository/Cart_repository");
@@ -23,11 +24,23 @@ const findCartById = async (id) => {
   }
 };
 
+const findCartByUserId = async (userId) => {
+  try {
+    const products = await getCartByUserId(userId);
+    if (products.length === 0) {
+      throw new Error('Id user not found for this cart');
+    }
+    return products;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 const createCart = async (newDataCart) => {
  
-    const cart = await addCart(newDataCart);
-
-    return cart;
+  const cart = await addCart(newDataCart);
+  return cart;
   
 };
 
@@ -46,6 +59,7 @@ module.exports = {
   findCarts,
   createCart,
   findCartById,
+  findCartByUserId,
   cartUpdate,
   cartDelete
 };

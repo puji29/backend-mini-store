@@ -2,6 +2,7 @@ const {
   findCarts,
   createCart,
   findCartById,
+  findCartByUserId,
   cartUpdate,
   cartDelete
 } = require("../usecase/Cart_usecase");
@@ -31,6 +32,21 @@ const findByidHandler = async (req, res) => {
   }
 };
 
+const getCartByUserIdHandler = async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const cart = await findCartByUserId(userId);
+    res.json(cart);
+  } catch (error) {
+    if (error.message === "Id user not found for this cart") {
+      res.status(404).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+};
+
 const updateHandler = async(req,res)=>{
     try {
         const id = req.params.id
@@ -47,15 +63,10 @@ const updateHandler = async(req,res)=>{
 
 const createHandler = async (req, res) => {
   try {
-    const newDataCart = {
-      quantity: req.body.quantity,
-      amount: req.body.amount,
-      userId: req.body.userId,
-      productId: req.body.productId,
-    };
+    const newDataCart = req.body
 
-    const cart = createCart(newDataCart);
-
+    // Gunakan await untuk menunggu hasil dari createCart
+    const cart = await createCart(newDataCart);
     res.status(201).json({ message: "add new cart succesfully", data: cart });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -78,6 +89,7 @@ module.exports = {
   findCartHandler,
   createHandler,
   findByidHandler,
+  getCartByUserIdHandler,
   updateHandler,
   deleteHandler
 };
