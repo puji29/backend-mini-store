@@ -70,6 +70,36 @@ const getOrderWithOrderItem = async () => {
   return orders;
 };
 
+const getOrderByUserId = async(userId)=>{
+  const db = await createDbConnection()
+
+  const [rows] = await db.query("SELECT * FROM `Order` JOIN order_item_list ON `Order`.order_item_id = order_item_list.id JOIN `Proudct` ON order_item_list.product_id= `Proudct`.id WHERE `Order`.user_id=?",[userId])
+
+  const orders = rows.map(row => ({
+    username: row.username,
+    email: row.email,
+    phone: row.phone,
+    zip: row.zip,
+    address: row.address,
+    totalOrderAmount: row.total_order_amount,
+    userId: row.user_id,
+    paymentId: row.payment_id,
+    status:row.status,
+    orderItemList: {
+      quantity: row.quantity,
+      amount: row.amount,
+      product: {
+        name: row.name,
+        image: row.url,
+        sellingPrice: row.sellingPrice,
+      }
+    },
+    createdAt:row.created_at
+  }));
+
+  return orders;
+}
+
 const deleteOrder= async(id)=>{
   const db = await createDbConnection()
 
@@ -81,5 +111,6 @@ const deleteOrder= async(id)=>{
 module.exports = {
   addOrder,
   getOrderWithOrderItem,
-  deleteOrder
+  deleteOrder,
+  getOrderByUserId
 };

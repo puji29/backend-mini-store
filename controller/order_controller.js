@@ -2,6 +2,7 @@ const {
   createOrder,
   findOrderByOrderItem,
   orderDelete,
+  findOrderByUserId
 } = require("../usecase/order_usecase");
 
 const createOrderHandler = async (req, res) => {
@@ -26,6 +27,18 @@ const getOrderByOrderItemHandler = async (req, res) => {
   }
 };
 
+const findOrderByUserIDHandler = async(req,res)=>{
+  const userId = req.params.userId
+
+  try {
+    const order = await findOrderByUserId(userId)
+
+    res.status(200).json({data: order})
+  } catch (error) {
+    res.status(500).json({ mesage: error.mesage });
+  }
+}
+
 const deleteOrderHandler = async (req, res) => {
   const id = req.params.id;
 
@@ -41,5 +54,6 @@ const deleteOrderHandler = async (req, res) => {
 module.exports = {
   createOrderHandler,
   getOrderByOrderItemHandler,
-  deleteOrderHandler
+  deleteOrderHandler,
+  findOrderByUserIDHandler
 };
