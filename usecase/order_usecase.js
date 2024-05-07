@@ -1,4 +1,4 @@
-const { addOrder, getOrderWithOrderItem } = require("../repository/Order_repository");
+const { addOrder, getOrderWithOrderItem,deleteOrder } = require("../repository/Order_repository");
 
 const createOrder =async(newDataOrder)=>{
     const order = await addOrder(newDataOrder)
@@ -12,7 +12,14 @@ const findOrderByOrderItem = async()=>{
     return getOrderWithOrderItems
 }
 
+const orderDelete = async(id)=>{
+    const order = await deleteOrder(id)
+
+    return order
+}
+
 module.exports={
     createOrder,
-    findOrderByOrderItem
+    findOrderByOrderItem,
+    orderDelete
 }
